@@ -612,8 +612,10 @@
     var params = new URLSearchParams();
     params.append(ENTRY.name, name);
     params.append(ENTRY.attending, attending);
-    params.append(ENTRY.guests, guests);
-    params.append(ENTRY.food, food);
+    if (attending === 'Yes!'){
+      params.append(ENTRY.guests, guests);
+      params.append(ENTRY.food, food);
+    }
     if (note){
       params.append(ENTRY.note, note);
     }
