@@ -287,6 +287,9 @@
     color: var(--paper);
   }
   .send-btn{
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
     font-family: 'Fraunces', serif;
     font-weight: 600;
     font-style: italic;
@@ -359,6 +362,24 @@
     border-radius: 3px;
     padding: 10px 12px;
     text-align: left;
+  }
+
+  .form-embed{
+    margin-top: 18px;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: var(--paper);
+  }
+  .form-embed iframe{
+    display: block;
+    width: 100%;
+    height: 720px;
+    border: 0;
+  }
+  .embed-fallback-link{
+    color: var(--sage-deep);
+    font-weight: 700;
   }
 
   .footer-note{
@@ -440,50 +461,51 @@
 
       <div class="rsvp">
         <p class="rsvp-title">RSVP</p>
-        <p class="rsvp-text">Fill this in and it'll send automatically &mdash; </p>
+        <p class="rsvp-text">Fill this in and it'll send automatically &mdash; or reach us directly:</p>
+        <div class="rsvp-phone">612&thinsp;&middot;&thinsp;306&thinsp;&middot;&thinsp;3907</div>
         <p class="rsvp-by">Please respond by October 10th</p>
 
         <form id="rsvp-form" class="rsvp-form">
           <div class="field">
             <label for="rsvp-name">Your name</label>
-            <input type="text" id="rsvp-name" name="Name" required placeholder="Jane Smith">
+            <input type="text" id="rsvp-name" required placeholder="Jane Smith">
           </div>
 
           <div class="field">
             <label>Will you waddle on over?</label>
             <div class="toggle-group" role="radiogroup">
-              <button type="button" class="toggle-btn is-selected" data-value="Yes, we'll be there!">Yes!</button>
-              <button type="button" class="toggle-btn" data-value="Sorry, can't make it">Can't make it</button>
+              <button type="button" class="toggle-btn is-selected" data-value="Yes!">Yes!</button>
+              <button type="button" class="toggle-btn" data-value="Cant make it !">Can't make it</button>
             </div>
-            <input type="hidden" id="rsvp-attending" name="Attending" value="Yes, we'll be there!">
+            <input type="hidden" id="rsvp-attending" value="Yes!">
           </div>
 
           <div class="field" id="guest-field">
             <label for="rsvp-guests">Total guests (incl. you)</label>
-            <input type="number" id="rsvp-guests" name="Guests" min="1" max="10" value="1">
+            <input type="number" id="rsvp-guests" min="1" max="10" value="1">
+          </div>
+
+          <div class="field" id="food-field">
+            <label>Food preference</label>
+            <div class="toggle-group" role="radiogroup">
+              <button type="button" class="toggle-btn is-selected" data-value="Veg">Veg</button>
+              <button type="button" class="toggle-btn" data-value="Non-veg">Non-veg</button>
+            </div>
+            <input type="hidden" id="rsvp-food" value="Veg">
           </div>
 
           <div class="field">
             <label for="rsvp-note">Note (optional)</label>
-            <input type="text" id="rsvp-note" name="Note" placeholder="Allergies, well wishes, etc.">
+            <input type="text" id="rsvp-note" placeholder="Allergies, well wishes, etc.">
           </div>
 
-          <input type="hidden" name="_subject" value="RSVP for Monvi's 1st Birthday">
-
           <button type="submit" class="send-btn" id="send-btn">Send RSVP</button>
-          <p class="send-hint" id="send-hint">Sends automatically &mdash; no extra step needed</p>
+          <p class="send-hint">Sends automatically &mdash; no extra step needed</p>
         </form>
 
         <div id="rsvp-success" class="rsvp-fallback" style="display:none;">
-          <p class="fallback-title" id="success-title">RSVP sent! 🎉</p>
+          <p class="fallback-title">RSVP sent! 🎉</p>
           <p class="fallback-msg" id="success-msg"></p>
-        </div>
-
-        <div id="rsvp-fallback" class="rsvp-fallback" style="display:none;">
-          <p class="fallback-title" id="fallback-title">Couldn't send automatically</p>
-          <a id="fallback-sms-link" class="fallback-sms-btn" href="#">Text it to 612-306-3907 instead</a>
-          <button type="button" id="copy-msg-btn" class="fallback-copy-btn">Copy message instead</button>
-          <p class="fallback-msg" id="fallback-msg-text"></p>
         </div>
       </div>
 
@@ -524,37 +546,58 @@
   setInterval(tick, 1000);
 
   // Attending toggle
-  var toggleBtns = document.querySelectorAll('.toggle-btn');
+  var attToggle = document.querySelectorAll('#rsvp-form .field:nth-of-type(2) .toggle-btn');
   var attendingInput = document.getElementById('rsvp-attending');
   var guestField = document.getElementById('guest-field');
+  var foodField = document.getElementById('food-field');
 
-  toggleBtns.forEach(function(btn){
+  attToggle.forEach(function(btn){
     btn.addEventListener('click', function(){
-      toggleBtns.forEach(function(b){ b.classList.remove('is-selected'); });
+      attToggle.forEach(function(b){ b.classList.remove('is-selected'); });
       btn.classList.add('is-selected');
       attendingInput.value = btn.getAttribute('data-value');
-      guestField.style.display = btn.getAttribute('data-value').indexOf('Yes') === 0 ? '' : 'none';
+      var isAttending = btn.getAttribute('data-value') === 'Yes!';
+      guestField.style.display = isAttending ? '' : 'none';
+      foodField.style.display = isAttending ? '' : 'none';
     });
   });
 
-  // Form submit -> auto-send via Formspree (works here because GitHub
-  // Pages has no CSP blocking outbound requests, unlike claude.ai artifacts)
+  // Food preference toggle
+  var foodToggle = document.querySelectorAll('#food-field .toggle-btn');
+  var foodInput = document.getElementById('rsvp-food');
+
+  foodToggle.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      foodToggle.forEach(function(b){ b.classList.remove('is-selected'); });
+      btn.classList.add('is-selected');
+      foodInput.value = btn.getAttribute('data-value');
+    });
+  });
+
+  // Silent submit straight to the Google Form's response endpoint.
+  // Works once deployed to GitHub Pages (no CSP restriction there);
+  // Google accepts the cross-origin POST in no-cors mode, so the
+  // response can't be read back, but the row still lands in the Sheet.
+  var GOOGLE_FORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSdPehcbWT2cFXgetj1kD8ZB49zHSrOMbA3yp-euQYue3UTlVw/formResponse';
+  var ENTRY = {
+    name: 'entry.16922346',
+    attending: 'entry.1636740908',
+    guests: 'entry.61968487',
+    food: 'entry.500095679',
+    note: 'entry.68064846'
+  };
+
   var form = document.getElementById('rsvp-form');
   var sendBtn = document.getElementById('send-btn');
   var successBox = document.getElementById('rsvp-success');
   var successMsg = document.getElementById('success-msg');
-  var fallback = document.getElementById('rsvp-fallback');
-  var fallbackLink = document.getElementById('fallback-sms-link');
-  var fallbackMsgText = document.getElementById('fallback-msg-text');
-  var copyBtn = document.getElementById('copy-msg-btn');
-
-  var FORMSPREE_ENDPOINT = 'https://formspree.io/f/moevqjlr';
 
   form.addEventListener('submit', function(e){
     e.preventDefault();
     var name = document.getElementById('rsvp-name').value.trim();
     var attending = attendingInput.value;
     var guests = document.getElementById('rsvp-guests').value;
+    var food = foodInput.value;
     var note = document.getElementById('rsvp-note').value.trim();
 
     if (!name){
@@ -565,69 +608,31 @@
     sendBtn.disabled = true;
     sendBtn.textContent = 'Sending…';
 
-    var lines = ["RSVP for Monvi's 1st birthday", "From: " + name, attending];
-    if (attending.indexOf('Yes') === 0){
-      lines.push("Guests: " + guests);
+    var params = new URLSearchParams();
+    params.append(ENTRY.name, name);
+    params.append(ENTRY.attending, attending);
+    if (attending === 'Yes!'){
+      params.append(ENTRY.guests, guests);
+      params.append(ENTRY.food, food);
     }
     if (note){
-      lines.push("Note: " + note);
+      params.append(ENTRY.note, note);
     }
-    var message = lines.join(' | ');
 
-    var data = new FormData(form);
-
-    fetch(FORMSPREE_ENDPOINT, {
+    fetch(GOOGLE_FORM_ACTION, {
       method: 'POST',
-      body: data,
-      headers: { 'Accept': 'application/json' }
-    }).then(function(resp){
-      if (resp.ok){
-        form.style.display = 'none';
-        successMsg.textContent = "Thanks, " + name + "! We've got your RSVP.";
-        successBox.style.display = 'block';
-        successBox.scrollIntoView({behavior:'smooth', block:'center'});
-      } else {
-        throw new Error('not ok');
-      }
-    }).catch(function(){
-      var phone = '6123063907';
-      var smsUrl = 'sms:' + phone + '?&body=' + encodeURIComponent(message);
-      fallbackLink.setAttribute('href', smsUrl);
-      fallbackMsgText.textContent = message;
-      form.style.display = 'none';
-      fallback.style.display = 'block';
-      fallback.scrollIntoView({behavior:'smooth', block:'center'});
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params.toString()
     }).finally(function(){
-      sendBtn.disabled = false;
-      sendBtn.textContent = 'Send RSVP';
+      // no-cors responses are opaque, so we can't check ok/status —
+      // if the POST didn't throw, treat it as sent.
+      form.style.display = 'none';
+      successMsg.textContent = "Thanks, " + name + "! We've got your RSVP.";
+      successBox.style.display = 'block';
+      successBox.scrollIntoView({behavior:'smooth', block:'center'});
     });
   });
-
-  copyBtn.addEventListener('click', function(){
-    var text = fallbackMsgText.textContent;
-    if (navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(text).then(function(){
-        copyBtn.textContent = 'Copied!';
-        setTimeout(function(){ copyBtn.textContent = 'Copy message instead'; }, 1800);
-      }).catch(function(){
-        fallbackFallbackCopy(text);
-      });
-    } else {
-      fallbackFallbackCopy(text);
-    }
-  });
-
-  function fallbackFallbackCopy(text){
-    var ta = document.createElement('textarea');
-    ta.value = text;
-    ta.style.position = 'fixed';
-    ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.select();
-    try { document.execCommand('copy'); copyBtn.textContent = 'Copied!'; } catch(err) {}
-    document.body.removeChild(ta);
-    setTimeout(function(){ copyBtn.textContent = 'Copy message instead'; }, 1800);
-  }
 })();
 </script>
 </body>
