@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monvi's First Birthday</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream: #FBF3E2;
+    --cream-deep: #F3E7CB;
+    --paper: #FFFDF7;
+    --sage: #7E9471;
+    --sage-deep: #57674C;
+    --forest: #3E4A34;
+    --wheat: #D9A441;
+    --blush: #E7B4A2;
+    --line: #C9B98F;
+  }
+  :root:not([data-theme="light"]){
+    --cream: #FBF3E2; --cream-deep:#F3E7CB; --paper:#FFFDF7; --sage:#7E9471; --sage-deep:#57674C; --forest:#3E4A34; --wheat:#D9A441; --blush:#E7B4A2; --line:#C9B98F;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --cream:#2B2A22; --cream-deep:#332F24; --paper:#332F24; --sage:#93AA85; --sage-deep:#B9CBAC; --forest:#EFE9D8; --wheat:#E3B75C; --blush:#E7B4A2; --line:#4C4736;
+    }
+  }
+  :root[data-theme="dark"]{
+    --cream:#2B2A22; --cream-deep:#332F24; --paper:#332F24; --sage:#93AA85; --sage-deep:#B9CBAC; --forest:#EFE9D8; --wheat:#E3B75C; --blush:#E7B4A2; --line:#4C4736;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background: var(--cream);
+    background-image:
+      radial-gradient(circle at 15% 20%, var(--cream-deep) 0%, transparent 45%),
+      radial-gradient(circle at 85% 80%, var(--cream-deep) 0%, transparent 45%);
+    font-family:'Nunito Sans', sans-serif;
+    color: var(--forest);
+    display:flex;
+    justify-content:center;
+    padding: 40px 16px 64px;
+    min-height:100vh;
+  }
+
+  .card{
+    width:100%;
+    max-width: 560px;
+    background: var(--paper);
+    border-radius: 4px;
+    padding: 52px 40px 44px;
+    position:relative;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+    border: 1px solid var(--line);
+    overflow:hidden;
+  }
+
+  .frame{
+    position:absolute;
+    inset: 14px;
+    border: 1.5px solid var(--sage);
+    border-radius: 2px;
+    pointer-events:none;
+    opacity:0.55;
+  }
+
+  .content{ position:relative; text-align:center; }
+
+  .goose{ width: 108px; height:auto; margin: 0 auto 6px; display:block; }
+
+  .eyebrow{
+    font-family:'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.05rem;
+    color: var(--sage-deep);
+    margin: 6px 0 2px;
+    letter-spacing:0.01em;
+  }
+
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(2.1rem, 7vw, 2.75rem);
+    line-height:1.08;
+    margin: 6px 0 4px;
+    color: var(--forest);
+  }
+
+  .name{
+    display:block;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--sage-deep);
+  }
+
+  .subline{
+    font-size: 1rem;
+    color: var(--forest);
+    opacity:0.8;
+    margin: 10px auto 26px;
+    max-width: 34ch;
+    line-height:1.5;
+  }
+
+  .sprig-divider{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap: 14px;
+    margin: 0 0 28px;
+  }
+  .sprig-divider svg{ width:30px; height:auto; flex-shrink:0; }
+  .sprig-divider .dash{
+    height:1px;
+    width: 56px;
+    background: var(--line);
+  }
+
+  .details{
+    display:flex;
+    flex-direction:column;
+    gap: 14px;
+    margin: 0 auto 30px;
+    max-width: 340px;
+    text-align:left;
+  }
+
+  .detail-row{
+    display:flex;
+    align-items:flex-start;
+    gap: 14px;
+  }
+
+  .detail-icon{
+    width: 26px;
+    height: 26px;
+    flex-shrink:0;
+    margin-top:2px;
+  }
+
+  .detail-label{
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--sage-deep);
+    font-weight:700;
+    margin-bottom:2px;
+  }
+
+  .detail-value{
+    font-size: 1.02rem;
+    color: var(--forest);
+    line-height:1.4;
+  }
+
+  .rsvp{
+    border: 1.5px dashed var(--wheat);
+    border-radius: 3px;
+    padding: 22px 24px 24px;
+    background: var(--cream);
+    margin-top: 8px;
+  }
+
+  .rsvp-title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-style:italic;
+    font-size: 1.3rem;
+    color: var(--forest);
+    margin: 0 0 6px;
+  }
+
+  .rsvp-text{
+    font-size: 0.95rem;
+    line-height:1.55;
+    color: var(--forest);
+    opacity:0.85;
+    margin:0 0 10px;
+  }
+
+  .rsvp-phone{
+    font-family:'Fraunces', serif;
+    font-size: 1.45rem;
+    font-weight:600;
+    color: var(--sage-deep);
+    letter-spacing: 0.01em;
+  }
+
+  .rsvp-by{
+    font-size: 0.85rem;
+    margin-top: 8px;
+    color: var(--forest);
+    opacity:0.7;
+  }
+
+  .countdown{
+    background: var(--cream-deep);
+    border-radius: 3px;
+    padding: 18px 16px 20px;
+    margin-bottom: 26px;
+  }
+  .countdown-label{
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--sage-deep);
+    font-weight: 700;
+    margin: 0 0 12px;
+  }
+  .countdown-grid{
+    display:flex;
+    justify-content:center;
+    gap: 18px;
+  }
+  .cd-unit{ display:flex; flex-direction:column; align-items:center; min-width: 44px; }
+  .cd-num{
+    font-family:'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1.7rem;
+    color: var(--forest);
+    line-height:1;
+  }
+  .cd-word{
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--forest);
+    opacity: 0.55;
+    margin-top: 4px;
+  }
+
+  .rsvp-form{
+    margin-top: 18px;
+    text-align: left;
+    display:flex;
+    flex-direction:column;
+    gap: 14px;
+  }
+  .field label{
+    display:block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--sage-deep);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+  .field input[type="text"],
+  .field input[type="number"]{
+    width: 100%;
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 1rem;
+    padding: 10px 12px;
+    border: 1.5px solid var(--line);
+    border-radius: 3px;
+    background: var(--paper);
+    color: var(--forest);
+  }
+  .field input:focus{
+    outline: none;
+    border-color: var(--sage);
+  }
+  .toggle-group{
+    display:flex;
+    gap: 10px;
+  }
+  .toggle-btn{
+    flex:1;
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.92rem;
+    padding: 10px 8px;
+    border-radius: 3px;
+    border: 1.5px solid var(--line);
+    background: var(--paper);
+    color: var(--forest);
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+  .toggle-btn.is-selected{
+    background: var(--sage);
+    border-color: var(--sage);
+    color: var(--paper);
+  }
+  .send-btn{
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-style: italic;
+    font-size: 1.05rem;
+    padding: 13px 20px;
+    border-radius: 3px;
+    border: none;
+    background: var(--wheat);
+    color: var(--forest);
+    cursor: pointer;
+    margin-top: 4px;
+    transition: transform 0.15s ease;
+  }
+  .send-btn:hover{ transform: translateY(-1px); }
+  .send-btn:active{ transform: translateY(0px); }
+  .send-hint{
+    font-size: 0.78rem;
+    color: var(--forest);
+    opacity: 0.55;
+    text-align:center;
+    margin: 6px 0 0;
+  }
+
+  .rsvp-fallback{
+    margin-top: 18px;
+    text-align: center;
+    padding-top: 6px;
+  }
+  .fallback-title{
+    font-family:'Fraunces', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--sage-deep);
+    margin: 0 0 14px;
+  }
+  .fallback-sms-btn{
+    display:block;
+    font-family:'Fraunces', serif;
+    font-weight: 600;
+    font-style: italic;
+    font-size: 1.05rem;
+    text-decoration: none;
+    padding: 13px 20px;
+    border-radius: 3px;
+    background: var(--wheat);
+    color: var(--forest);
+    margin-bottom: 10px;
+  }
+  .fallback-copy-btn{
+    display:block;
+    width:100%;
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.92rem;
+    padding: 11px 16px;
+    border-radius: 3px;
+    border: 1.5px solid var(--line);
+    background: var(--paper);
+    color: var(--forest);
+    cursor: pointer;
+  }
+  .fallback-msg{
+    margin-top: 14px;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--forest);
+    opacity: 0.75;
+    background: var(--cream-deep);
+    border-radius: 3px;
+    padding: 10px 12px;
+    text-align: left;
+  }
+
+  .footer-note{
+    margin-top: 26px;
+    font-size: 0.85rem;
+    color: var(--forest);
+    opacity: 0.55;
+    font-style: italic;
+    font-family:'Fraunces', serif;
+  }
+
+  @media (max-width: 420px){
+    .card{ padding: 40px 22px 34px; }
+    .details{ padding: 0 4px; }
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="frame"></div>
+    <div class="content">
+
+      <svg class="goose" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="70" cy="98" rx="40" ry="26" fill="#F7F2E4" stroke="#3E4A34" stroke-width="2.2"/>
+        <path d="M70 42 C 52 42 40 58 42 76 C 43 86 52 92 62 90" fill="#F7F2E4" stroke="#3E4A34" stroke-width="2.2"/>
+        <circle cx="60" cy="46" r="17" fill="#F7F2E4" stroke="#3E4A34" stroke-width="2.2"/>
+        <path d="M45 46 L 30 43 L 46 52 Z" fill="#D9A441" stroke="#3E4A34" stroke-width="1.8" stroke-linejoin="round"/>
+        <circle cx="55" cy="43" r="2.3" fill="#3E4A34"/>
+        <path d="M92 88 C 100 82 100 68 90 62" fill="none" stroke="#3E4A34" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M42 118 L 50 128 M 58 118 L 58 130 M 80 118 L 80 130 M 90 118 L 96 128" stroke="#D9A441" stroke-width="2.2" stroke-linecap="round"/>
+        <ellipse cx="70" cy="98" rx="40" ry="26" fill="none" stroke="#3E4A34" stroke-width="0"/>
+      </svg>
+
+      <p class="eyebrow">it's a gosling celebration</p>
+      <h1>Little Goose<span class="name">Monvi Reddy turns ONE</span></h1>
+      <p class="subline">Waddle you say we celebrate together? Please join us for cake, cuddles, and a whole lot of quacking up.</p>
+
+      <div class="sprig-divider">
+        <svg viewBox="0 0 40 40" fill="none"><path d="M20 36 C 20 22 12 16 4 12 M20 36 C 20 22 28 16 36 12 M20 36 L20 10" stroke="#7E9471" stroke-width="2" stroke-linecap="round"/></svg>
+        <div class="dash"></div>
+        <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="3.5" fill="#D9A441"/></svg>
+        <div class="dash"></div>
+        <svg viewBox="0 0 40 40" fill="none" style="transform:scaleX(-1)"><path d="M20 36 C 20 22 12 16 4 12 M20 36 C 20 22 28 16 36 12 M20 36 L20 10" stroke="#7E9471" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+
+      <div class="details">
+        <div class="detail-row">
+          <svg class="detail-icon" viewBox="0 0 26 26" fill="none"><rect x="3" y="5" width="20" height="18" rx="2" stroke="#57674C" stroke-width="1.8"/><path d="M3 10H23" stroke="#57674C" stroke-width="1.8"/><path d="M8 3V7M18 3V7" stroke="#57674C" stroke-width="1.8" stroke-linecap="round"/><circle cx="13" cy="16" r="2" fill="#D9A441"/></svg>
+          <div>
+            <div class="detail-label">Date</div>
+            <div class="detail-value">Saturday, October 17</div>
+          </div>
+        </div>
+        <div class="detail-row">
+          <svg class="detail-icon" viewBox="0 0 26 26" fill="none"><circle cx="13" cy="13" r="10" stroke="#57674C" stroke-width="1.8"/><path d="M13 7V13L17.5 15.5" stroke="#57674C" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <div>
+            <div class="detail-label">Time</div>
+            <div class="detail-value">6:00 PM</div>
+          </div>
+        </div>
+        <div class="detail-row">
+          <svg class="detail-icon" viewBox="0 0 26 26" fill="none"><path d="M13 23C13 23 21 15.6 21 10.5C21 5.8 17.4 2.5 13 2.5C8.6 2.5 5 5.8 5 10.5C5 15.6 13 23 13 23Z" stroke="#57674C" stroke-width="1.8" stroke-linejoin="round"/><circle cx="13" cy="10.3" r="3" stroke="#57674C" stroke-width="1.8"/></svg>
+          <div>
+            <div class="detail-label">Where</div>
+            <div class="detail-value">Gahanna Senior Center<br>480 Rocky Fork Blvd, Gahanna, OH</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="countdown" id="countdown">
+        <p class="countdown-label">Counting down to the celebration</p>
+        <div class="countdown-grid">
+          <div class="cd-unit"><span class="cd-num" id="cd-days">00</span><span class="cd-word">days</span></div>
+          <div class="cd-unit"><span class="cd-num" id="cd-hours">00</span><span class="cd-word">hrs</span></div>
+          <div class="cd-unit"><span class="cd-num" id="cd-mins">00</span><span class="cd-word">min</span></div>
+          <div class="cd-unit"><span class="cd-num" id="cd-secs">00</span><span class="cd-word">sec</span></div>
+        </div>
+      </div>
+
+      <div class="rsvp">
+        <p class="rsvp-title">RSVP</p>
+        <p class="rsvp-text">Fill this in and it'll send automatically &mdash; or reach us directly:</p>
+        <div class="rsvp-phone">612&thinsp;&middot;&thinsp;306&thinsp;&middot;&thinsp;3907</div>
+        <p class="rsvp-by">Please respond by October 10th</p>
+
+        <form id="rsvp-form" class="rsvp-form">
+          <div class="field">
+            <label for="rsvp-name">Your name</label>
+            <input type="text" id="rsvp-name" name="Name" required placeholder="Jane Smith">
+          </div>
+
+          <div class="field">
+            <label>Will you waddle on over?</label>
+            <div class="toggle-group" role="radiogroup">
+              <button type="button" class="toggle-btn is-selected" data-value="Yes, we'll be there!">Yes!</button>
+              <button type="button" class="toggle-btn" data-value="Sorry, can't make it">Can't make it</button>
+            </div>
+            <input type="hidden" id="rsvp-attending" name="Attending" value="Yes, we'll be there!">
+          </div>
+
+          <div class="field" id="guest-field">
+            <label for="rsvp-guests">Total guests (incl. you)</label>
+            <input type="number" id="rsvp-guests" name="Guests" min="1" max="10" value="1">
+          </div>
+
+          <div class="field">
+            <label for="rsvp-note">Note (optional)</label>
+            <input type="text" id="rsvp-note" name="Note" placeholder="Allergies, well wishes, etc.">
+          </div>
+
+          <input type="hidden" name="_subject" value="RSVP for Monvi's 1st Birthday">
+
+          <button type="submit" class="send-btn" id="send-btn">Send RSVP</button>
+          <p class="send-hint" id="send-hint">Sends automatically &mdash; no extra step needed</p>
+        </form>
+
+        <div id="rsvp-success" class="rsvp-fallback" style="display:none;">
+          <p class="fallback-title" id="success-title">RSVP sent! 🎉</p>
+          <p class="fallback-msg" id="success-msg"></p>
+        </div>
+
+        <div id="rsvp-fallback" class="rsvp-fallback" style="display:none;">
+          <p class="fallback-title" id="fallback-title">Couldn't send automatically</p>
+          <a id="fallback-sms-link" class="fallback-sms-btn" href="#">Text it to 612-306-3907 instead</a>
+          <button type="button" id="copy-msg-btn" class="fallback-copy-btn">Copy message instead</button>
+          <p class="fallback-msg" id="fallback-msg-text"></p>
+        </div>
+      </div>
+
+      <p class="footer-note">We can't wait to celebrate with you!</p>
+    </div>
+  </div>
+
+<script>
+(function(){
+  // Countdown
+  var target = new Date("2026-10-17T18:00:00");
+  var elDays = document.getElementById('cd-days');
+  var elHours = document.getElementById('cd-hours');
+  var elMins = document.getElementById('cd-mins');
+  var elSecs = document.getElementById('cd-secs');
+  var countdownBox = document.getElementById('countdown');
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+
+  function tick(){
+    var now = new Date();
+    var diff = target - now;
+    if (diff <= 0){
+      countdownBox.querySelector('.countdown-label').textContent = "It's party time!";
+      elDays.textContent = elHours.textContent = elMins.textContent = elSecs.textContent = '00';
+      return;
+    }
+    var days = Math.floor(diff / 86400000);
+    var hours = Math.floor((diff % 86400000) / 3600000);
+    var mins = Math.floor((diff % 3600000) / 60000);
+    var secs = Math.floor((diff % 60000) / 1000);
+    elDays.textContent = pad(days);
+    elHours.textContent = pad(hours);
+    elMins.textContent = pad(mins);
+    elSecs.textContent = pad(secs);
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  // Attending toggle
+  var toggleBtns = document.querySelectorAll('.toggle-btn');
+  var attendingInput = document.getElementById('rsvp-attending');
+  var guestField = document.getElementById('guest-field');
+
+  toggleBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      toggleBtns.forEach(function(b){ b.classList.remove('is-selected'); });
+      btn.classList.add('is-selected');
+      attendingInput.value = btn.getAttribute('data-value');
+      guestField.style.display = btn.getAttribute('data-value').indexOf('Yes') === 0 ? '' : 'none';
+    });
+  });
+
+  // Form submit -> auto-send via Formspree (works here because GitHub
+  // Pages has no CSP blocking outbound requests, unlike claude.ai artifacts)
+  var form = document.getElementById('rsvp-form');
+  var sendBtn = document.getElementById('send-btn');
+  var successBox = document.getElementById('rsvp-success');
+  var successMsg = document.getElementById('success-msg');
+  var fallback = document.getElementById('rsvp-fallback');
+  var fallbackLink = document.getElementById('fallback-sms-link');
+  var fallbackMsgText = document.getElementById('fallback-msg-text');
+  var copyBtn = document.getElementById('copy-msg-btn');
+
+  var FORMSPREE_ENDPOINT = 'https://formspree.io/f/moevqjlr';
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = document.getElementById('rsvp-name').value.trim();
+    var attending = attendingInput.value;
+    var guests = document.getElementById('rsvp-guests').value;
+    var note = document.getElementById('rsvp-note').value.trim();
+
+    if (!name){
+      document.getElementById('rsvp-name').focus();
+      return;
+    }
+
+    sendBtn.disabled = true;
+    sendBtn.textContent = 'Sending…';
+
+    var lines = ["RSVP for Monvi's 1st birthday", "From: " + name, attending];
+    if (attending.indexOf('Yes') === 0){
+      lines.push("Guests: " + guests);
+    }
+    if (note){
+      lines.push("Note: " + note);
+    }
+    var message = lines.join(' | ');
+
+    var data = new FormData(form);
+
+    fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    }).then(function(resp){
+      if (resp.ok){
+        form.style.display = 'none';
+        successMsg.textContent = "Thanks, " + name + "! We've got your RSVP.";
+        successBox.style.display = 'block';
+        successBox.scrollIntoView({behavior:'smooth', block:'center'});
+      } else {
+        throw new Error('not ok');
+      }
+    }).catch(function(){
+      var phone = '6123063907';
+      var smsUrl = 'sms:' + phone + '?&body=' + encodeURIComponent(message);
+      fallbackLink.setAttribute('href', smsUrl);
+      fallbackMsgText.textContent = message;
+      form.style.display = 'none';
+      fallback.style.display = 'block';
+      fallback.scrollIntoView({behavior:'smooth', block:'center'});
+    }).finally(function(){
+      sendBtn.disabled = false;
+      sendBtn.textContent = 'Send RSVP';
+    });
+  });
+
+  copyBtn.addEventListener('click', function(){
+    var text = fallbackMsgText.textContent;
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){
+        copyBtn.textContent = 'Copied!';
+        setTimeout(function(){ copyBtn.textContent = 'Copy message instead'; }, 1800);
+      }).catch(function(){
+        fallbackFallbackCopy(text);
+      });
+    } else {
+      fallbackFallbackCopy(text);
+    }
+  });
+
+  function fallbackFallbackCopy(text){
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); copyBtn.textContent = 'Copied!'; } catch(err) {}
+    document.body.removeChild(ta);
+    setTimeout(function(){ copyBtn.textContent = 'Copy message instead'; }, 1800);
+  }
+})();
+</script>
+</body>
+</html>
