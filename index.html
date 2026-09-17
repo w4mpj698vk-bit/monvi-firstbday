@@ -504,7 +504,7 @@
         </form>
 
         <div id="rsvp-success" class="rsvp-fallback" style="display:none;">
-          <p class="fallback-title">RSVP sent! 🎉</p>
+          <p class="fallback-title" id="success-title">RSVP sent! 🎉</p>
           <p class="fallback-msg" id="success-msg"></p>
         </div>
       </div>
@@ -590,6 +590,7 @@
   var form = document.getElementById('rsvp-form');
   var sendBtn = document.getElementById('send-btn');
   var successBox = document.getElementById('rsvp-success');
+  var successTitle = document.getElementById('success-title');
   var successMsg = document.getElementById('success-msg');
 
   form.addEventListener('submit', function(e){
@@ -611,10 +612,8 @@
     var params = new URLSearchParams();
     params.append(ENTRY.name, name);
     params.append(ENTRY.attending, attending);
-    if (attending === 'Yes!'){
-      params.append(ENTRY.guests, guests);
-      params.append(ENTRY.food, food);
-    }
+    params.append(ENTRY.guests, guests);
+    params.append(ENTRY.food, food);
     if (note){
       params.append(ENTRY.note, note);
     }
@@ -628,7 +627,13 @@
       // no-cors responses are opaque, so we can't check ok/status —
       // if the POST didn't throw, treat it as sent.
       form.style.display = 'none';
-      successMsg.textContent = "Thanks, " + name + "! We've got your RSVP.";
+      if (attending === 'Yes!'){
+        successTitle.textContent = 'RSVP sent! \ud83c\udf89';
+        successMsg.textContent = "Thanks, " + name + "! We've got your RSVP \u2014 can't wait to see you there!";
+      } else {
+        successTitle.textContent = "We'll miss you \ud83e\udd7a";
+        successMsg.textContent = "Aw, we'll miss you, " + name + "! Thanks for letting us know.";
+      }
       successBox.style.display = 'block';
       successBox.scrollIntoView({behavior:'smooth', block:'center'});
     });
